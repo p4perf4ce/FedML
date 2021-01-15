@@ -3,9 +3,13 @@
 .idea/*
 .vscode/*
 .ipynb_checkpoints/*
+*.ipynb_checkpoints/*
 ./*/.ipynb_checkpoints/*
 ./*/*/.ipynb_checkpoints/*
+./*/*/*/.ipynb_checkpoints/*
+.vim/*
 *.swp
+*.swo
 typings/*
 
 *.pyc
