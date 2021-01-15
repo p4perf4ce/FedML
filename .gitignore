@@ -2,7 +2,9 @@
 .idea
 .idea/*
 .vscode/*
-*.ipynb_checkpoints/*
+.ipynb_checkpoints/*
+./*/.ipynb_checkpoints/*
+./*/*/.ipynb_checkpoints/*
 *.swp
 typings/*
 

@@ -1,8 +1,7 @@
 # U-SHAPED SPLIT NEURAL NETWORK (U-SplitNN)
 # Maintainer: Amrest Chinkamol (amrest.c@ku.th)
 import logging
-from typing import Any, Iterable, Iterator, Literal, Tuple
-
+from typing import Any, Collection, Iterator, Literal, Tuple
 
 from torch.functional import Tensor
 import torch.nn as nn
@@ -25,9 +24,6 @@ class Client(object):
     :attr server_rank   Server's MPI_NODE_RANK
     :attr optimizer     Model optimizer(s)
     :attr inputs        Current input data
-    :attr _labels        Current label data
-
-    
     """
 
     def __init__(self, args):
@@ -35,8 +31,8 @@ class Client(object):
         self.comm = args["comm"]
         self.model = args["model"]
         # Dataloader
-        self.trainloader: Iterable[Any] = args["trainloader"]
-        self.testloader: Iterable[Any] = args["testloader"]
+        self.trainloader: Collection[Any] = args["trainloader"]
+        self.testloader: Collection[Any] = args["testloader"]
         self.dataloader: Iterator[tuple]
         # MPI Node rank
         self.rank: int = args["rank"]
@@ -57,22 +53,26 @@ class Client(object):
         # Data handling
         self._labels: Tensor
         # Local parameters
-        self.total: int = 0
-        self.correct: int = 0
-        self.val_loss: int = 0
-        self.epoch_count: int = 0
-        self.batch_idx: int = 0
+        self._total: int = 0
+        self._correct: int = 0
+        self._val_loss: int = 0
+        self._epoch_count: int = 0
+        self.train_batch_idx: int = 0
+        self.validate_batch_idx: int = 0
         self.phase: Literal['validation', 'train']
-        self.log_step = 50
+        self._log_step: int = 50
+        self.step: int = 0
 
     def reset_local_params(self):
-        self.total = 0
-        self.val_loss = 0
-        self.step = 0
-        self.batch_idx = 0
+        self._total = 0
+        self._val_loss = 0
+        self._step = 0
+        self.train_batch_idx = 0
+        self.validate_batch_idx = 0
 
     def eval_mode(self) -> None:
         """Set smasher and transcriber into evaluation mode.
+        dataloader attribute will load the test data.
         """
         self.dataloader = iter(self.testloader)
         self.phase = "validation"
@@ -80,6 +80,7 @@ class Client(object):
 
     def train_mode(self) -> None:
         """Set smasher and transcriber into training mode.
+        dataloader attribute will load the train data.
         """
         self.dataloader = iter(self.trainloader)
         self.phase = "train"
@@ -122,9 +123,9 @@ class Client(object):
         prediction: Tuple[Any, Tensor] = logits.max(1)
         _, idx = prediction
         self.correct += idx.eq(labels).sum().item()
-        if self.step % self.log_step == 0 and self.phase == 'train':
+        if self.step % self._log_step == 0 and self.phase == 'train':
             accuracy = self.correct / self.total
-            logging.info(f'phase=train acc={accuracy} loss={self.loss} epoch={self.epoch_count} step={self.step}'
+            logging.info(f'phase=train acc={accuracy} loss={self.loss} epoch={self._epoch_count} step={self.step}'
                     )
             return accuracy
         else:
@@ -140,11 +141,12 @@ class Client(object):
         self.transfer_acts.retain_grad()
         # Header Passing
         logits = self.model(trans_acts)
-        
-        self.loss = self.criterion(logits, self._labels)
+
+        self.loss: Tensor = self.criterion(logits, self._labels)
         # Calculate Accuracy
         self._accuracy(logits=logits, labels=self._labels)
         self.step += 1
+        return self.loss
 
 
     def header_backward_pass(self) -> Tensor:

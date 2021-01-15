@@ -17,16 +17,17 @@ class MPIMessage(object):
     :attr MSG_TYPE_C2C_SEMAPHORE            Client semaphore to Client message. 
     """
     MSG_TYPE_S2C_GRADS = 1
-    MSG_TYPE_S2C_ACTS = 2
+    MSG_TYPE_S2C_SEND_ACTS = 2
 
     # Client to server
     MSG_TYPE_C2S_SEND_ACTS = 3
-    MSG_TYPE_C2S_VALIDATION_MODE = 4
-    MSG_TYPE_C2S_VALIDATION_OVER = 5
-    MSG_TYPE_C2S_PROTOCOL_FINISHED = 6
+    MSG_TYPE_C2S_SEND_GRADS = 4
+    MSG_TYPE_C2S_VALIDATION_MODE = 5
+    MSG_TYPE_C2S_VALIDATION_OVER = 6
+    MSG_TYPE_C2S_PROTOCOL_FINISHED = 7
 
     # Client to client
-    MSG_TYPE_C2C_SEMAPHORE = 7  # Interlocking
+    MSG_TYPE_C2C_SEMAPHORE = 8  # Interlocking
 
     MSG_ARG_KEY_TYPE = "msg_type"
     MSG_ARG_KEY_SENDER = "sender"
