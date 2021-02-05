@@ -12,8 +12,12 @@ from fedml_core.distributed.communication.message import Message
 
 import logging
 
-class U_SplitNNClientManager(ClientManager):
+class USplitNNClientManager(ClientManager):
     """Client Manager for U-SplitNN
+
+        description: This class is an abstaction layer over the client worker class.
+        Describing the client process and function at the higher level.
+        Defining what client can do and what can be done.
 
     """
 
@@ -88,9 +92,10 @@ class U_SplitNNClientManager(ClientManager):
         """S2C Activations send over.
         :param msg_params MPI_MESSAGE parameter
         """
-        # Passing activation to client
+        # Passing activation from server to client
         acts = msg_params.get(MPIMessage.MSG_ARG_KEY_ACTS)
-        loss = self.client.header_forward_pass(trans_acts=acts)
+        # Ran forward pass on header
+        self.client.header_forward_pass(trans_acts=acts)
         # Handle train/test
         if self.client == 'train':
             header_grads = self.client.header_backward_pass()

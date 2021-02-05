@@ -7,13 +7,15 @@ from fedml_core.distributed.communication.message import Message
 
 class USplitNNServerManager(ServerManager):
     """U-SplitNNServerManager
+
+    This class is an abstaction class over the Server class and ServerManager Primitive class.
     """
 
     def __init__(self, arg_dict, trainer, backend='MPI'):
         """U-SplitNN server manager initiatiate
         """
         super().__init__(
-                args=arg_dict['arg'],
+                args=arg_dict['args'],
                 comm=arg_dict['comm'],
                 rank=arg_dict['rank'],
                 size=arg_dict['max_rank'] + 1,
@@ -23,11 +25,38 @@ class USplitNNServerManager(ServerManager):
         self.round_idx = 0
 
     def run(self):
+        """Starting up server process
+        """
         super().run()  # Inherit from core ServerManager class
 
     # --- Handlers Begin ---
     def register_message_receive_handlers(self) -> None:
-        return super().register_message_receive_handlers()
+        # Handle activation from smasher
+        self.register_message_receive_handler(
+            MPIMessage.MSG_TYPE_C2S_SEND_ACTS,
+            handler_callback_func=self.handle_message_acts
+        )
+        # Handle gradients from header
+        self.register_message_receive_handler(
+                MPIMessage.MSG_TYPE_C2S_SEND_GRADS,
+                handler_callback_func=self.handle_message_grads
+                )
+        # Handle validation mode send_validation
+        self.register_message_receive_handler(
+            MPIMessage.MSG_TYPE_C2S_VALIDATION_MODE,
+            handler_callback_func=self.handle_message_validation_mode
+
+        )
+        # Handle validation over signal
+        self.register_message_receive_handler(
+                MPIMessage.MSG_TYPE_C2S_VALIDATION_OVER,
+                handler_callback_func=self.handle_message_validation_over
+                )
+        # Handle Protocol finalization
+        self.register_message_receive_handler(
+                MPIMessage.MSG_TYPE_C2S_PROTOCOL_FINISHED,
+                handler_callback_func=self.handle_message_finish_protocol
+                )
 
     def handle_message_acts(
             self,
@@ -53,7 +82,6 @@ class USplitNNServerManager(ServerManager):
         grads = self.trainer.backward_pass(received_grads)
         # Backward activation gradiant to client
         self.send_grads_to_client(receiver_id=self.trainer.active_node, grads=grads)
-                
 
     def handle_message_validation_mode(self) -> None:
         """Handle trigger validation signal messages from client
@@ -87,7 +115,7 @@ class USplitNNServerManager(ServerManager):
 
     def send_acts_to_client(self, receiver_id, acts) -> None:
         message = Message(
-                MPIMessage.MSG_TYPE_S2C_ACTS,
+                MPIMessage.MSG_TYPE_S2C_SEND_ACTS,
                 sender_id=self.get_sender_id(),
                 receiver_id=receiver_id
                 )

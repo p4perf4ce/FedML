@@ -14,7 +14,9 @@ class MPIMessage(object):
     :attr MSG_TYPE_C2S_PROTOCOL_FINISHED    Client finalization signal to Server message.
 
     Client-to-Client
-    :attr MSG_TYPE_C2C_SEMAPHORE            Client semaphore to Client message. 
+    :attr MSG_TYPE_C2C_SEMAPHORE            Client semaphore to Client message.
+
+    description: This class is a MPI_MESSAGE definition class.
     """
     MSG_TYPE_S2C_GRADS = 1
     MSG_TYPE_S2C_SEND_ACTS = 2

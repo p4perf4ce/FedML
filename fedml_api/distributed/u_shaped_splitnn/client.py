@@ -1,7 +1,7 @@
 # U-SHAPED SPLIT NEURAL NETWORK (U-SplitNN)
 # Maintainer: Amrest Chinkamol (amrest.c@ku.th)
 import logging
-from typing import Any, Collection, Iterator, Literal, Tuple
+from typing import Any, Collection, Iterator, Tuple
 
 from torch.functional import Tensor
 import torch.nn as nn
@@ -24,12 +24,19 @@ class Client(object):
     :attr server_rank   Server's MPI_NODE_RANK
     :attr optimizer     Model optimizer(s)
     :attr inputs        Current input data
+
+    description: This class is client worker process class, serve to mimicking the client node in the system.
+    Client should be able to forward through `smasher` and send result tensor to server node and then receive
+    tensor from server node to forward through `header` to obtain final result.
+
+    This class handle the lowest level of work that need to be done, in order to provide the manager an abstract function.
     """
 
     def __init__(self, args):
         # MPI Communation group
         self.comm = args["comm"]
-        self.model = args["model"]
+        self.smasher = args["model"][0]
+        self.header = args["model"][1]
         # Dataloader
         self.trainloader: Collection[Any] = args["trainloader"]
         self.testloader: Collection[Any] = args["testloader"]
@@ -46,8 +53,10 @@ class Client(object):
         self.MAX_EPOCH_PER_NODE: int = args["epochs"]
         self.SERVER_RANK: int = args["server_rank"]
         # TODO: This should be optimizable ?
-        self.optimizer: optim.Optimizer = optim.SGD(self.model.parameters(), lr=0.1, momentum=0.9,
+        self.smasher_optimizer: optim.Optimizer = optim.SGD(self.smasher.parameters(), lr=0.1, momentum=0.9,
                                    weight_decay=5e-4)
+        self.header_optimizer: optim.Optimizer = optim.SGD(self.header.parameters(), lr=0.1, momentum=0.9,
+                                    weight_decay=5e-4)
         self.criterion = nn.CrossEntropyLoss()  # TODO: Configurable
         self.device = args["device"]
         # Data handling
@@ -76,7 +85,8 @@ class Client(object):
         """
         self.dataloader = iter(self.testloader)
         self.phase = "validation"
-        self.model.eval()
+        self.smasher.eval()
+        self.header.eval()
 
     def train_mode(self) -> None:
         """Set smasher and transcriber into training mode.
@@ -84,7 +94,8 @@ class Client(object):
         """
         self.dataloader = iter(self.trainloader)
         self.phase = "train"
-        self.model.train()
+        self.smasher.train()
+        self.header.train()
 
 
     # NOTE: We should devide forward/backward passing
@@ -105,9 +116,9 @@ class Client(object):
         # Transfer tensor to device.
         inputs, self._labels = inputs.to(self.device), labels.to(self.device)
         # Set smasher gradient to zero.
-        self.optimizer.zero_grad()
+        self.smasher.optimizer.zero_grad()
         # Passing to smasher part.
-        self.smasher_acts: Tensor = self.model(inputs)
+        self.smasher_acts: Tensor = self.smasher(inputs)
 
         return self.smasher_acts
 
@@ -136,11 +147,10 @@ class Client(object):
         """Forward pass of U-shaped SplitNN on header part
         """
         self.transfer_acts = trans_acts
-        self.transfer_acts.retain_grad()
-        self.optimizer.zero_grad()
+        self.header_optimizer.zero_grad()
         self.transfer_acts.retain_grad()
         # Header Passing
-        logits = self.model(trans_acts)
+        logits = self.header(trans_acts)
 
         self.loss: Tensor = self.criterion(logits, self._labels)
         # Calculate Accuracy
@@ -155,7 +165,7 @@ class Client(object):
         description: Backward gradient from transcriber part to server and backaround
         """
         self.loss.backward()
-        self.optimizer.step()
+        self.header_optimizer.step()
         return self.transfer_acts.grad
 
     def smasher_backward_pass(self, trans_grads: Tensor) -> None:
@@ -164,5 +174,5 @@ class Client(object):
         """
         # Received gradient from server
         self.smasher_acts.backward(trans_grads)
-        self.optimizer.step()
+        self.smasher_optimizer.step()
 
