@@ -3,6 +3,7 @@
 # Based on fedml_api/distributed/splitnn/server.py
 
 import logging
+from typing_extensions import Literal
 
 import torch.nn as nn
 import torch.optim as optim
@@ -13,6 +14,7 @@ class Server(object):
 
     :attr comm
     :attr model
+    :attr rank
     :attr MAX_RANK
 
     description: Server class is a server node working class. Providing low-level interface
@@ -25,9 +27,11 @@ class Server(object):
         self.comm = args["comm"]
         # Model
         self.model = args["model"]
+        self.rank = args["rank"]
         # Max rank
         self.MAX_RANK = args["max_rank"]
         self.init_params()
+        self.phase: Literal['validation', 'train'] 
 
     def init_params(self):
         """Utility function.

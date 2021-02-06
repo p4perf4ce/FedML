@@ -1,9 +1,7 @@
 # U-SHAPED SPLIT NEURAL NETWORK (U-SplitNN)
 # Maintainer: Amrest Chinkamol (amrest.c@ku.th)
 
-from multiprocessing import Semaphore
 from torch.functional import Tensor
-from fedml_api.distributed.u_shaped_splitnn import client
 from fedml_api.distributed.u_shaped_splitnn.client import Client
 from fedml_api.distributed.u_shaped_splitnn.message_definition import MPIMessage
 from fedml_core.distributed.client.client_manager import ClientManager
@@ -26,7 +24,7 @@ class USplitNNClientManager(ClientManager):
                 args=args_dict["args"],
                 comm=args_dict["comm"],
                 rank=args_dict["rank"],
-                size=args_dict["size"],
+                size=args_dict["max_rank"] + 1,
                 backend=backend)
         # Manager used same trainer for every client.
         self.client: Client = client
@@ -40,9 +38,11 @@ class USplitNNClientManager(ClientManager):
 
         :description Manager with rank 1 must start training process.
         """
+        logging.info(f"Client-{self.client.rank} Registered")
         if self.client.rank == 1:
             logging.info("Starting Protocol from rank 1 process")
             self.run_forward_pass()
+        super().run()
 
     # --- Begin Handler Section ---
 
@@ -59,7 +59,7 @@ class USplitNNClientManager(ClientManager):
             handler_callback_func=self.handle_message_gradients)
         # Register Server to Client Activations handler
         self.register_message_receive_handler(
-            msg_type=MPIMessage.MSG_TYPE_S2C_GRADS,
+            msg_type=MPIMessage.MSG_TYPE_S2C_SEND_ACTS,
             handler_callback_func=self.handle_message_acts)
 
     def handle_message_semaphore(self, msg_params: Message) -> None:
@@ -92,20 +92,27 @@ class USplitNNClientManager(ClientManager):
         """S2C Activations send over.
         :param msg_params MPI_MESSAGE parameter
         """
+        logging.info("Received server activation. Forwarding ...")
         # Passing activation from server to client
         acts = msg_params.get(MPIMessage.MSG_ARG_KEY_ACTS)
         # Ran forward pass on header
         self.client.header_forward_pass(trans_acts=acts)
         # Handle train/test
-        if self.client == 'train':
+        if self.client.phase == 'train':
             header_grads = self.client.header_backward_pass()
             self.send_gradients_to_server(grads=header_grads, receiver_id=self.client.SERVER_RANK)
-        elif self.client == 'validation':
+            logging.info(f"Backpropagating gradient to server ...")
+        #NOTE: This entire section should have their own handler
+        elif self.client.phase == 'validation':
             # NOTE: Add report script here.
             # Proceed to next batch
             if self.client.validate_batch_idx < len(self.client.testloader):
-                self.client.smasher_forward_pass()
+                logits = self.client.header_forward_pass(trans_acts=acts)
+                # Whatever goes here
+
+                # Batch ended. Continue
                 self.client.validate_batch_idx += 1
+                self.run_validation_forward_pass()
                 return;
             else:
                 # End validation phase
@@ -114,6 +121,7 @@ class USplitNNClientManager(ClientManager):
                 if self.round_idx == self.client.MAX_EPOCH_PER_NODE:
                     if self.client.rank == self.client.MAX_RANK:
                         # Send gratituous to server.
+                        logging.info(f"Round finish, sending gratituous.")
                         self.send_finish_to_server(receiver_id=self.client.SERVER_RANK)
                     self.finish()
                 elif self.round_idx < self.client.MAX_EPOCH_PER_NODE:
@@ -134,7 +142,7 @@ class USplitNNClientManager(ClientManager):
         """
         message = Message(
                 MPIMessage.MSG_TYPE_C2S_SEND_GRADS,
-                sender_id=self.get_sender_id,
+                sender_id=self.get_sender_id(),
                 receiver_id=receiver_id,
                 )
         message.add_params(
@@ -153,7 +161,7 @@ class USplitNNClientManager(ClientManager):
         # Compose message
         message = Message(
                 MPIMessage.MSG_TYPE_C2S_SEND_ACTS,
-                sender_id=self.get_sender_id,
+                sender_id=self.get_sender_id(),
                 receiver_id=receiver_id,
                 )
         message.add_params(
@@ -197,7 +205,7 @@ class USplitNNClientManager(ClientManager):
         """
         message = Message(
                 MPIMessage.MSG_TYPE_C2S_VALIDATION_OVER,
-                sender_id=self.get_sender_id,
+                sender_id=self.get_sender_id(),
                 receiver_id=receiver_id
                 )
         self.send_message(message=message)
@@ -225,22 +233,27 @@ class USplitNNClientManager(ClientManager):
         # Run forward pass
         smashed_acts = self.client.smasher_forward_pass()
         # Send to server
+        logging.info(f"Sending activation to server with rank {self.client.SERVER_RANK}...")
         self.send_activations_to_server(
                 acts=smashed_acts,
                 receiver_id=self.client.SERVER_RANK)
 
+        logging.info(f"Complete forward passing from client")
         self.client.train_batch_idx += 1
 
     def run_validation_forward_pass(self):
         """Run validation forward pass.
         """
+        logging.info(f"Begin validation phase from Client {self.rank}")
         # Initiate validation
         self.send_validation_signal_to_server(receiver_id=self.client.SERVER_RANK)
         # Prep local
         self.client.eval_mode()
         # Execute validation
-        self.client.smasher_forward_pass()
+        acts = self.client.smasher_forward_pass()
         self.client.train_batch_idx += 1
+
+        self.send_activations_to_server(acts=acts, receiver_id=self.client.SERVER_RANK)
 
 # ---   Function End   ---
 

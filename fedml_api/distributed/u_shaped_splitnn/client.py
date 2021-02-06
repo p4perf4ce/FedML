@@ -7,6 +7,8 @@ from torch.functional import Tensor
 import torch.nn as nn
 import torch.optim as optim
 
+from typing_extensions import Literal
+
 
 class Client(object):
     """Client worker on node.
@@ -30,6 +32,8 @@ class Client(object):
     tensor from server node to forward through `header` to obtain final result.
 
     This class handle the lowest level of work that need to be done, in order to provide the manager an abstract function.
+
+    There shouldn't be any need to override this class, (We should move model manipulation things out into other abstracts class)
     """
 
     def __init__(self, args):
@@ -53,6 +57,8 @@ class Client(object):
         self.MAX_EPOCH_PER_NODE: int = args["epochs"]
         self.SERVER_RANK: int = args["server_rank"]
         # TODO: This should be optimizable ?
+        # NOTE: <PROPOSE> This should come from the model entirely
+        # For easy slicing model. This functionality should retain ?
         self.smasher_optimizer: optim.Optimizer = optim.SGD(self.smasher.parameters(), lr=0.1, momentum=0.9,
                                    weight_decay=5e-4)
         self.header_optimizer: optim.Optimizer = optim.SGD(self.header.parameters(), lr=0.1, momentum=0.9,
@@ -70,7 +76,7 @@ class Client(object):
         self.validate_batch_idx: int = 0
         self.phase: Literal['validation', 'train']
         self._log_step: int = 50
-        self.step: int = 0
+        self._step: int = 0
 
     def reset_local_params(self):
         self._total = 0
@@ -100,6 +106,7 @@ class Client(object):
 
     # NOTE: We should devide forward/backward passing
     #       process into two separated section.
+    # NOTE: DONE
 
 
     def smasher_forward_pass(self) -> Tensor:
@@ -116,7 +123,7 @@ class Client(object):
         # Transfer tensor to device.
         inputs, self._labels = inputs.to(self.device), labels.to(self.device)
         # Set smasher gradient to zero.
-        self.smasher.optimizer.zero_grad()
+        self.smasher_optimizer.zero_grad()
         # Passing to smasher part.
         self.smasher_acts: Tensor = self.smasher(inputs)
 
@@ -130,17 +137,17 @@ class Client(object):
 
         :return Accuracy in train mode and None in validation mode.
         """
-        self.total += labels.size(0)
+        self._total += labels.size(0)
         prediction: Tuple[Any, Tensor] = logits.max(1)
         _, idx = prediction
-        self.correct += idx.eq(labels).sum().item()
-        if self.step % self._log_step == 0 and self.phase == 'train':
-            accuracy = self.correct / self.total
-            logging.info(f'phase=train acc={accuracy} loss={self.loss} epoch={self._epoch_count} step={self.step}'
+        self._correct += idx.eq(labels).sum().item()
+        if self._step % self._log_step == 0 and self.phase == 'train':
+            accuracy = self._correct / self._total
+            logging.info(f'phase=train acc={accuracy} loss={self.loss} epoch={self._epoch_count} step={self._step}'
                     )
             return accuracy
         else:
-            self.val_loss += self.loss.item()
+            self._val_loss += self.loss.item()
 
 
     def header_forward_pass(self, trans_acts: Tensor) -> None:
@@ -155,7 +162,7 @@ class Client(object):
         self.loss: Tensor = self.criterion(logits, self._labels)
         # Calculate Accuracy
         self._accuracy(logits=logits, labels=self._labels)
-        self.step += 1
+        self._step += 1
         return self.loss
 
 

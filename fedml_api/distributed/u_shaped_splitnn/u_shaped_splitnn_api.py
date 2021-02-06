@@ -1,3 +1,4 @@
+import logging
 from mpi4py import MPI
 
 from fedml_api.distributed.u_shaped_splitnn.client import Client
@@ -34,9 +35,11 @@ def UShapedSplitNN_Initialize(process_id: int, worker_number: int, device, comm,
     server_rank = 0
     if process_id == server_rank:
         # Initialize server as it is.
+        logging.info("Initializing server process ...")
         init_server(comm, server_model, process_id, worker_number, device, args)
     else:
         # Initialize client as it is
+        logging.info("Initializing client process ...")
         init_client(comm, client_model, worker_number, train_data_local, test_data_local,
                     process_id, server_rank, args.epochs, device, args)
     pass
