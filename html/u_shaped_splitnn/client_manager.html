@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>u_shaped_splitnn.client_manager API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>u_shaped_splitnn.client_manager</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># U-SHAPED SPLIT NEURAL NETWORK (U-SplitNN)
+# Maintainer: Amrest Chinkamol (amrest.c@ku.th)
+
+from torch.functional import Tensor
+from fedml_api.distributed.u_shaped_splitnn.client import Client
+from fedml_api.distributed.u_shaped_splitnn.message_definition import MPIMessage
+from fedml_core.distributed.client.client_manager import ClientManager
+from fedml_core.distributed.communication.message import Message
+
+
+import logging
+
+class USplitNNClientManager(ClientManager):
+    &#34;&#34;&#34;Client Manager for U-SplitNN
+
+        description: This class is an abstaction layer over the client worker class.
+        Describing the client process and function at the higher level.
+        Defining what client can do and what can be done.
+
+    &#34;&#34;&#34;
+
+    def __init__(self, args_dict: dict, client: Client, backend: str = &#34;MPI&#34;):
+        super().__init__(
+                args=args_dict[&#34;args&#34;],
+                comm=args_dict[&#34;comm&#34;],
+                rank=args_dict[&#34;rank&#34;],
+                size=args_dict[&#34;max_rank&#34;] + 1,
+                backend=backend)
+        # Manager used same trainer for every client.
+        self.client: Client = client
+        # Start client as train mode
+        self.client.train_mode()
+        # Manager
+        self.round_idx = 0
+
+    def run(self):
+        &#34;&#34;&#34;Start ClientManager Training
+
+        :description Manager with rank 1 must start training process.
+        &#34;&#34;&#34;
+        logging.info(f&#34;Client-{self.client.rank} Registered&#34;)
+        if self.client.rank == 1:
+            logging.info(&#34;Starting Protocol from rank 1 process&#34;)
+            self.run_forward_pass()
+        super().run()
+
+    # --- Begin Handler Section ---
+
+    def register_message_receive_handlers(self) -&gt; None:
+        &#34;&#34;&#34;Register MPI message receive handler.
+        &#34;&#34;&#34;
+        # Register Client to Client Semaphore handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+            handler_callback_func=self.handle_message_semaphore)
+        # Register Server to Client Gradient Update handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_S2C_GRADS,
+            handler_callback_func=self.handle_message_gradients)
+        # Register Server to Client Activations handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_S2C_SEND_ACTS,
+            handler_callback_func=self.handle_message_acts)
+
+    def handle_message_semaphore(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;C2C Semaphore callback
+
+        :param msg_params MPI_MESSAGE parameter
+
+        :description When this handler is called, evoking this node to training.
+        &#34;&#34;&#34;
+        self.client.train_mode()
+        self.run_forward_pass()
+
+    def handle_message_gradients(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;S2C Gradient send over.
+        :param msg_params MPI_MESSAGE parameter
+        &#34;&#34;&#34;
+        # Get gradient from message.
+        grads = msg_params.get(MPIMessage.MSG_ARG_KEY_GRADS)
+        # Begin backward pass with sender gradient.
+        self.client.smasher_backward_pass(grads)
+        # Handle when all traindata is ran out.
+        if self.client.train_batch_idx == len(self.client.trainloader):
+            logging.info(f&#34;Epoch over at node {self.rank}&#34;)
+            self.round_idx += 1
+            self.run_validation_forward_pass()  # Run evaluation.
+        else:
+            self.run_forward_pass()  # Continue forward pass.
+
+    def handle_message_acts(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;S2C Activations send over.
+        :param msg_params MPI_MESSAGE parameter
+        &#34;&#34;&#34;
+        logging.info(&#34;Received server activation. Forwarding ...&#34;)
+        # Passing activation from server to client
+        acts = msg_params.get(MPIMessage.MSG_ARG_KEY_ACTS)
+        # Ran forward pass on header
+        self.client.header_forward_pass(trans_acts=acts)
+        # Handle train/test
+        if self.client.phase == &#39;train&#39;:
+            header_grads = self.client.header_backward_pass()
+            self.send_gradients_to_server(grads=header_grads, receiver_id=self.client.SERVER_RANK)
+            logging.info(f&#34;Backpropagating gradient to server ...&#34;)
+        #NOTE: This entire section should have their own handler
+        elif self.client.phase == &#39;validation&#39;:
+            # NOTE: Add report script here.
+            # Proceed to next batch
+            if self.client.validate_batch_idx &lt; len(self.client.testloader):
+                logits = self.client.header_forward_pass(trans_acts=acts)
+                # Whatever goes here
+
+                # Batch ended. Continue
+                self.client.validate_batch_idx += 1
+                self.run_validation_forward_pass()
+                return;
+            else:
+                # End validation phase
+                self.round_idx += 1
+                self.send_validation_over_to_server(receiver_id=self.client.SERVER_RANK)
+                if self.round_idx == self.client.MAX_EPOCH_PER_NODE:
+                    if self.client.rank == self.client.MAX_RANK:
+                        # Send gratituous to server.
+                        logging.info(f&#34;Round finish, sending gratituous.&#34;)
+                        self.send_finish_to_server(receiver_id=self.client.SERVER_RANK)
+                    self.finish()
+                elif self.round_idx &lt; self.client.MAX_EPOCH_PER_NODE:
+                    logging.info(f&#39;Sending Semaphore from {self.client.rank} to {self.client.node_right}&#39;)
+                    self.send_semaphore_to_client(receiver_id=self.client.node_right)
+
+
+    # --- End Handler Section ---
+
+    # --- Verb Functions Start ---
+
+    def send_gradients_to_server(
+            self,
+            grads: Tensor,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb gradient to server.
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_SEND_GRADS,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id,
+                )
+        message.add_params(
+                MPIMessage.MSG_ARG_KEY_GRADS,
+                value=grads
+                )
+        self.send_message(message=message)
+
+    def send_activations_to_server(
+            self,
+            acts: Tensor,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb activation to server.
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_SEND_ACTS,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id,
+                )
+        message.add_params(
+                key=MPIMessage.MSG_ARG_KEY_ACTS,
+                value=acts,
+                )
+        self.send_message(message=message)
+
+    def send_semaphore_to_client(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2C verb semaphore to client
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id)
+        self.send_message(message=message)
+
+    def send_validation_signal_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb semaphore to server
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_VALIDATION_MODE,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    def send_validation_over_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb validation phase ending to server
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_VALIDATION_OVER,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    def send_finish_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb finalization complete signal to server
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_PROTOCOL_FINISHED,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    # --- Verb Function End --
+
+    # --- Functional Begin ---
+
+    def run_forward_pass(self):
+        &#34;&#34;&#34;Run client forward pass function.
+        &#34;&#34;&#34;
+        # Run forward pass
+        smashed_acts = self.client.smasher_forward_pass()
+        # Send to server
+        logging.info(f&#34;Sending activation to server with rank {self.client.SERVER_RANK}...&#34;)
+        self.send_activations_to_server(
+                acts=smashed_acts,
+                receiver_id=self.client.SERVER_RANK)
+
+        logging.info(f&#34;Complete forward passing from client&#34;)
+        self.client.train_batch_idx += 1
+
+    def run_validation_forward_pass(self):
+        &#34;&#34;&#34;Run validation forward pass.
+        &#34;&#34;&#34;
+        logging.info(f&#34;Begin validation phase from Client {self.rank}&#34;)
+        # Initiate validation
+        self.send_validation_signal_to_server(receiver_id=self.client.SERVER_RANK)
+        # Prep local
+        self.client.eval_mode()
+        # Execute validation
+        acts = self.client.smasher_forward_pass()
+        self.client.train_batch_idx += 1
+
+        self.send_activations_to_server(acts=acts, receiver_id=self.client.SERVER_RANK)
+
+# ---   Function End   ---</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager"><code class="flex name class">
+<span>class <span class="ident">USplitNNClientManager</span></span>
+<span>(</span><span>args_dict: dict, client: fedml_api.distributed.u_shaped_splitnn.client.Client, backend: str = 'MPI')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Client Manager for U-SplitNN</p>
+<p>description: This class is an abstaction layer over the client worker class.
+Describing the client process and function at the higher level.
+Defining what client can do and what can be done.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class USplitNNClientManager(ClientManager):
+    &#34;&#34;&#34;Client Manager for U-SplitNN
+
+        description: This class is an abstaction layer over the client worker class.
+        Describing the client process and function at the higher level.
+        Defining what client can do and what can be done.
+
+    &#34;&#34;&#34;
+
+    def __init__(self, args_dict: dict, client: Client, backend: str = &#34;MPI&#34;):
+        super().__init__(
+                args=args_dict[&#34;args&#34;],
+                comm=args_dict[&#34;comm&#34;],
+                rank=args_dict[&#34;rank&#34;],
+                size=args_dict[&#34;max_rank&#34;] + 1,
+                backend=backend)
+        # Manager used same trainer for every client.
+        self.client: Client = client
+        # Start client as train mode
+        self.client.train_mode()
+        # Manager
+        self.round_idx = 0
+
+    def run(self):
+        &#34;&#34;&#34;Start ClientManager Training
+
+        :description Manager with rank 1 must start training process.
+        &#34;&#34;&#34;
+        logging.info(f&#34;Client-{self.client.rank} Registered&#34;)
+        if self.client.rank == 1:
+            logging.info(&#34;Starting Protocol from rank 1 process&#34;)
+            self.run_forward_pass()
+        super().run()
+
+    # --- Begin Handler Section ---
+
+    def register_message_receive_handlers(self) -&gt; None:
+        &#34;&#34;&#34;Register MPI message receive handler.
+        &#34;&#34;&#34;
+        # Register Client to Client Semaphore handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+            handler_callback_func=self.handle_message_semaphore)
+        # Register Server to Client Gradient Update handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_S2C_GRADS,
+            handler_callback_func=self.handle_message_gradients)
+        # Register Server to Client Activations handler
+        self.register_message_receive_handler(
+            msg_type=MPIMessage.MSG_TYPE_S2C_SEND_ACTS,
+            handler_callback_func=self.handle_message_acts)
+
+    def handle_message_semaphore(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;C2C Semaphore callback
+
+        :param msg_params MPI_MESSAGE parameter
+
+        :description When this handler is called, evoking this node to training.
+        &#34;&#34;&#34;
+        self.client.train_mode()
+        self.run_forward_pass()
+
+    def handle_message_gradients(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;S2C Gradient send over.
+        :param msg_params MPI_MESSAGE parameter
+        &#34;&#34;&#34;
+        # Get gradient from message.
+        grads = msg_params.get(MPIMessage.MSG_ARG_KEY_GRADS)
+        # Begin backward pass with sender gradient.
+        self.client.smasher_backward_pass(grads)
+        # Handle when all traindata is ran out.
+        if self.client.train_batch_idx == len(self.client.trainloader):
+            logging.info(f&#34;Epoch over at node {self.rank}&#34;)
+            self.round_idx += 1
+            self.run_validation_forward_pass()  # Run evaluation.
+        else:
+            self.run_forward_pass()  # Continue forward pass.
+
+    def handle_message_acts(self, msg_params: Message) -&gt; None:
+        &#34;&#34;&#34;S2C Activations send over.
+        :param msg_params MPI_MESSAGE parameter
+        &#34;&#34;&#34;
+        logging.info(&#34;Received server activation. Forwarding ...&#34;)
+        # Passing activation from server to client
+        acts = msg_params.get(MPIMessage.MSG_ARG_KEY_ACTS)
+        # Ran forward pass on header
+        self.client.header_forward_pass(trans_acts=acts)
+        # Handle train/test
+        if self.client.phase == &#39;train&#39;:
+            header_grads = self.client.header_backward_pass()
+            self.send_gradients_to_server(grads=header_grads, receiver_id=self.client.SERVER_RANK)
+            logging.info(f&#34;Backpropagating gradient to server ...&#34;)
+        #NOTE: This entire section should have their own handler
+        elif self.client.phase == &#39;validation&#39;:
+            # NOTE: Add report script here.
+            # Proceed to next batch
+            if self.client.validate_batch_idx &lt; len(self.client.testloader):
+                logits = self.client.header_forward_pass(trans_acts=acts)
+                # Whatever goes here
+
+                # Batch ended. Continue
+                self.client.validate_batch_idx += 1
+                self.run_validation_forward_pass()
+                return;
+            else:
+                # End validation phase
+                self.round_idx += 1
+                self.send_validation_over_to_server(receiver_id=self.client.SERVER_RANK)
+                if self.round_idx == self.client.MAX_EPOCH_PER_NODE:
+                    if self.client.rank == self.client.MAX_RANK:
+                        # Send gratituous to server.
+                        logging.info(f&#34;Round finish, sending gratituous.&#34;)
+                        self.send_finish_to_server(receiver_id=self.client.SERVER_RANK)
+                    self.finish()
+                elif self.round_idx &lt; self.client.MAX_EPOCH_PER_NODE:
+                    logging.info(f&#39;Sending Semaphore from {self.client.rank} to {self.client.node_right}&#39;)
+                    self.send_semaphore_to_client(receiver_id=self.client.node_right)
+
+
+    # --- End Handler Section ---
+
+    # --- Verb Functions Start ---
+
+    def send_gradients_to_server(
+            self,
+            grads: Tensor,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb gradient to server.
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_SEND_GRADS,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id,
+                )
+        message.add_params(
+                MPIMessage.MSG_ARG_KEY_GRADS,
+                value=grads
+                )
+        self.send_message(message=message)
+
+    def send_activations_to_server(
+            self,
+            acts: Tensor,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb activation to server.
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_SEND_ACTS,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id,
+                )
+        message.add_params(
+                key=MPIMessage.MSG_ARG_KEY_ACTS,
+                value=acts,
+                )
+        self.send_message(message=message)
+
+    def send_semaphore_to_client(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2C verb semaphore to client
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id)
+        self.send_message(message=message)
+
+    def send_validation_signal_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb semaphore to server
+        &#34;&#34;&#34;
+        # Compose message
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_VALIDATION_MODE,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    def send_validation_over_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb validation phase ending to server
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_VALIDATION_OVER,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    def send_finish_to_server(
+            self,
+            receiver_id: int,
+            ):
+        &#34;&#34;&#34;C2S verb finalization complete signal to server
+        &#34;&#34;&#34;
+        message = Message(
+                MPIMessage.MSG_TYPE_C2S_PROTOCOL_FINISHED,
+                sender_id=self.get_sender_id(),
+                receiver_id=receiver_id
+                )
+        self.send_message(message=message)
+
+    # --- Verb Function End --
+
+    # --- Functional Begin ---
+
+    def run_forward_pass(self):
+        &#34;&#34;&#34;Run client forward pass function.
+        &#34;&#34;&#34;
+        # Run forward pass
+        smashed_acts = self.client.smasher_forward_pass()
+        # Send to server
+        logging.info(f&#34;Sending activation to server with rank {self.client.SERVER_RANK}...&#34;)
+        self.send_activations_to_server(
+                acts=smashed_acts,
+                receiver_id=self.client.SERVER_RANK)
+
+        logging.info(f&#34;Complete forward passing from client&#34;)
+        self.client.train_batch_idx += 1
+
+    def run_validation_forward_pass(self):
+        &#34;&#34;&#34;Run validation forward pass.
+        &#34;&#34;&#34;
+        logging.info(f&#34;Begin validation phase from Client {self.rank}&#34;)
+        # Initiate validation
+        self.send_validation_signal_to_server(receiver_id=self.client.SERVER_RANK)
+        # Prep local
+        self.client.eval_mode()
+        # Execute validation
+        acts = self.client.smasher_forward_pass()
+        self.client.train_batch_idx += 1
+
+        self.send_activations_to_server(acts=acts, receiver_id=self.client.SERVER_RANK)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>fedml_core.distributed.client.client_manager.ClientManager</li>
+<li>fedml_core.distributed.communication.observer.Observer</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_acts"><code class="name flex">
+<span>def <span class="ident">handle_message_acts</span></span>(<span>self, msg_params: fedml_core.distributed.communication.message.Message) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>S2C Activations send over.
+:param msg_params MPI_MESSAGE parameter</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_message_acts(self, msg_params: Message) -&gt; None:
+    &#34;&#34;&#34;S2C Activations send over.
+    :param msg_params MPI_MESSAGE parameter
+    &#34;&#34;&#34;
+    logging.info(&#34;Received server activation. Forwarding ...&#34;)
+    # Passing activation from server to client
+    acts = msg_params.get(MPIMessage.MSG_ARG_KEY_ACTS)
+    # Ran forward pass on header
+    self.client.header_forward_pass(trans_acts=acts)
+    # Handle train/test
+    if self.client.phase == &#39;train&#39;:
+        header_grads = self.client.header_backward_pass()
+        self.send_gradients_to_server(grads=header_grads, receiver_id=self.client.SERVER_RANK)
+        logging.info(f&#34;Backpropagating gradient to server ...&#34;)
+    #NOTE: This entire section should have their own handler
+    elif self.client.phase == &#39;validation&#39;:
+        # NOTE: Add report script here.
+        # Proceed to next batch
+        if self.client.validate_batch_idx &lt; len(self.client.testloader):
+            logits = self.client.header_forward_pass(trans_acts=acts)
+            # Whatever goes here
+
+            # Batch ended. Continue
+            self.client.validate_batch_idx += 1
+            self.run_validation_forward_pass()
+            return;
+        else:
+            # End validation phase
+            self.round_idx += 1
+            self.send_validation_over_to_server(receiver_id=self.client.SERVER_RANK)
+            if self.round_idx == self.client.MAX_EPOCH_PER_NODE:
+                if self.client.rank == self.client.MAX_RANK:
+                    # Send gratituous to server.
+                    logging.info(f&#34;Round finish, sending gratituous.&#34;)
+                    self.send_finish_to_server(receiver_id=self.client.SERVER_RANK)
+                self.finish()
+            elif self.round_idx &lt; self.client.MAX_EPOCH_PER_NODE:
+                logging.info(f&#39;Sending Semaphore from {self.client.rank} to {self.client.node_right}&#39;)
+                self.send_semaphore_to_client(receiver_id=self.client.node_right)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_gradients"><code class="name flex">
+<span>def <span class="ident">handle_message_gradients</span></span>(<span>self, msg_params: fedml_core.distributed.communication.message.Message) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>S2C Gradient send over.
+:param msg_params MPI_MESSAGE parameter</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_message_gradients(self, msg_params: Message) -&gt; None:
+    &#34;&#34;&#34;S2C Gradient send over.
+    :param msg_params MPI_MESSAGE parameter
+    &#34;&#34;&#34;
+    # Get gradient from message.
+    grads = msg_params.get(MPIMessage.MSG_ARG_KEY_GRADS)
+    # Begin backward pass with sender gradient.
+    self.client.smasher_backward_pass(grads)
+    # Handle when all traindata is ran out.
+    if self.client.train_batch_idx == len(self.client.trainloader):
+        logging.info(f&#34;Epoch over at node {self.rank}&#34;)
+        self.round_idx += 1
+        self.run_validation_forward_pass()  # Run evaluation.
+    else:
+        self.run_forward_pass()  # Continue forward pass.</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_semaphore"><code class="name flex">
+<span>def <span class="ident">handle_message_semaphore</span></span>(<span>self, msg_params: fedml_core.distributed.communication.message.Message) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2C Semaphore callback</p>
+<p>:param msg_params MPI_MESSAGE parameter</p>
+<p>:description When this handler is called, evoking this node to training.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_message_semaphore(self, msg_params: Message) -&gt; None:
+    &#34;&#34;&#34;C2C Semaphore callback
+
+    :param msg_params MPI_MESSAGE parameter
+
+    :description When this handler is called, evoking this node to training.
+    &#34;&#34;&#34;
+    self.client.train_mode()
+    self.run_forward_pass()</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.register_message_receive_handlers"><code class="name flex">
+<span>def <span class="ident">register_message_receive_handlers</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register MPI message receive handler.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_message_receive_handlers(self) -&gt; None:
+    &#34;&#34;&#34;Register MPI message receive handler.
+    &#34;&#34;&#34;
+    # Register Client to Client Semaphore handler
+    self.register_message_receive_handler(
+        msg_type=MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+        handler_callback_func=self.handle_message_semaphore)
+    # Register Server to Client Gradient Update handler
+    self.register_message_receive_handler(
+        msg_type=MPIMessage.MSG_TYPE_S2C_GRADS,
+        handler_callback_func=self.handle_message_gradients)
+    # Register Server to Client Activations handler
+    self.register_message_receive_handler(
+        msg_type=MPIMessage.MSG_TYPE_S2C_SEND_ACTS,
+        handler_callback_func=self.handle_message_acts)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Start ClientManager Training</p>
+<p>:description Manager with rank 1 must start training process.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    &#34;&#34;&#34;Start ClientManager Training
+
+    :description Manager with rank 1 must start training process.
+    &#34;&#34;&#34;
+    logging.info(f&#34;Client-{self.client.rank} Registered&#34;)
+    if self.client.rank == 1:
+        logging.info(&#34;Starting Protocol from rank 1 process&#34;)
+        self.run_forward_pass()
+    super().run()</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.run_forward_pass"><code class="name flex">
+<span>def <span class="ident">run_forward_pass</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run client forward pass function.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_forward_pass(self):
+    &#34;&#34;&#34;Run client forward pass function.
+    &#34;&#34;&#34;
+    # Run forward pass
+    smashed_acts = self.client.smasher_forward_pass()
+    # Send to server
+    logging.info(f&#34;Sending activation to server with rank {self.client.SERVER_RANK}...&#34;)
+    self.send_activations_to_server(
+            acts=smashed_acts,
+            receiver_id=self.client.SERVER_RANK)
+
+    logging.info(f&#34;Complete forward passing from client&#34;)
+    self.client.train_batch_idx += 1</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.run_validation_forward_pass"><code class="name flex">
+<span>def <span class="ident">run_validation_forward_pass</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run validation forward pass.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_validation_forward_pass(self):
+    &#34;&#34;&#34;Run validation forward pass.
+    &#34;&#34;&#34;
+    logging.info(f&#34;Begin validation phase from Client {self.rank}&#34;)
+    # Initiate validation
+    self.send_validation_signal_to_server(receiver_id=self.client.SERVER_RANK)
+    # Prep local
+    self.client.eval_mode()
+    # Execute validation
+    acts = self.client.smasher_forward_pass()
+    self.client.train_batch_idx += 1
+
+    self.send_activations_to_server(acts=acts, receiver_id=self.client.SERVER_RANK)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_activations_to_server"><code class="name flex">
+<span>def <span class="ident">send_activations_to_server</span></span>(<span>self, acts: torch.Tensor, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2S verb activation to server.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_activations_to_server(
+        self,
+        acts: Tensor,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2S verb activation to server.
+    &#34;&#34;&#34;
+    # Compose message
+    message = Message(
+            MPIMessage.MSG_TYPE_C2S_SEND_ACTS,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id,
+            )
+    message.add_params(
+            key=MPIMessage.MSG_ARG_KEY_ACTS,
+            value=acts,
+            )
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_finish_to_server"><code class="name flex">
+<span>def <span class="ident">send_finish_to_server</span></span>(<span>self, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2S verb finalization complete signal to server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_finish_to_server(
+        self,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2S verb finalization complete signal to server
+    &#34;&#34;&#34;
+    message = Message(
+            MPIMessage.MSG_TYPE_C2S_PROTOCOL_FINISHED,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id
+            )
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_gradients_to_server"><code class="name flex">
+<span>def <span class="ident">send_gradients_to_server</span></span>(<span>self, grads: torch.Tensor, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2S verb gradient to server.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_gradients_to_server(
+        self,
+        grads: Tensor,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2S verb gradient to server.
+    &#34;&#34;&#34;
+    message = Message(
+            MPIMessage.MSG_TYPE_C2S_SEND_GRADS,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id,
+            )
+    message.add_params(
+            MPIMessage.MSG_ARG_KEY_GRADS,
+            value=grads
+            )
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_semaphore_to_client"><code class="name flex">
+<span>def <span class="ident">send_semaphore_to_client</span></span>(<span>self, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2C verb semaphore to client</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_semaphore_to_client(
+        self,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2C verb semaphore to client
+    &#34;&#34;&#34;
+    # Compose message
+    message = Message(
+            MPIMessage.MSG_TYPE_C2C_SEMAPHORE,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id)
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_over_to_server"><code class="name flex">
+<span>def <span class="ident">send_validation_over_to_server</span></span>(<span>self, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2S verb validation phase ending to server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_validation_over_to_server(
+        self,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2S verb validation phase ending to server
+    &#34;&#34;&#34;
+    message = Message(
+            MPIMessage.MSG_TYPE_C2S_VALIDATION_OVER,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id
+            )
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+<dt id="u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_signal_to_server"><code class="name flex">
+<span>def <span class="ident">send_validation_signal_to_server</span></span>(<span>self, receiver_id: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>C2S verb semaphore to server</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_validation_signal_to_server(
+        self,
+        receiver_id: int,
+        ):
+    &#34;&#34;&#34;C2S verb semaphore to server
+    &#34;&#34;&#34;
+    # Compose message
+    message = Message(
+            MPIMessage.MSG_TYPE_C2S_VALIDATION_MODE,
+            sender_id=self.get_sender_id(),
+            receiver_id=receiver_id
+            )
+    self.send_message(message=message)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="u_shaped_splitnn" href="index.html">u_shaped_splitnn</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager" href="#u_shaped_splitnn.client_manager.USplitNNClientManager">USplitNNClientManager</a></code></h4>
+<ul class="">
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_acts" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_acts">handle_message_acts</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_gradients" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_gradients">handle_message_gradients</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_semaphore" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.handle_message_semaphore">handle_message_semaphore</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.register_message_receive_handlers" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.register_message_receive_handlers">register_message_receive_handlers</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.run" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.run">run</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.run_forward_pass" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.run_forward_pass">run_forward_pass</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.run_validation_forward_pass" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.run_validation_forward_pass">run_validation_forward_pass</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_activations_to_server" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_activations_to_server">send_activations_to_server</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_finish_to_server" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_finish_to_server">send_finish_to_server</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_gradients_to_server" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_gradients_to_server">send_gradients_to_server</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_semaphore_to_client" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_semaphore_to_client">send_semaphore_to_client</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_over_to_server" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_over_to_server">send_validation_over_to_server</a></code></li>
+<li><code><a title="u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_signal_to_server" href="#u_shaped_splitnn.client_manager.USplitNNClientManager.send_validation_signal_to_server">send_validation_signal_to_server</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
