@@ -1,0 +1,12 @@
+# GPU Mapping configuration
+# See GPU Mapping file at gpu_mapping.md at fedavg directory
+# Example
+# configuration_name:
+#   hostname_1: [#num_processes of gpu_0, #num_processes of gpu_1]
+#   hostname_2: [#num_processes of gpu_0, #num_processes of gpu_1]
+mapping_default:
+  hp2: [1, 1]
+
+tk2_xtk:
+  hp2: [1, 1]
+  xtk: [1, 1]

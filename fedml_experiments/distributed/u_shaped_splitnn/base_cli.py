@@ -30,10 +30,10 @@ simple_options = [
            help='how many round of communications we shoud use'),
     click.option('--frequency_of_the_test', type=int, default=1,
            help='the frequency of the algorithms'),
-    click.option('--gpu_server_num', type=int, default=1,
-           help='gpu_server_num'),
-    click.option('--gpu_num_per_server', type=int, default=4,
-           help='gpu_num_per_server'),
+    click.option('--gpu_mapping_file', type=str, default='./gpu_mapping.yaml',
+           help='Path to GPU mapping file'),
+    click.option('--gpu_mapping_key', type=str, default='mapping_default',
+           help='GPU mapping configuration key'),
     click.option('--verbose', is_flag=True, default=False),
 ]
 
@@ -61,8 +61,8 @@ def base():
 def run(
         model:str, dataset:str, data_dir:str, partition_method: str, partition_alpha: str,
         client_number: int, batch_size:int, lr: float, wd: float, epochs: float,
-        local_points: int, comm_round: int, frequency_of_the_test: int, gpu_server_num: int,
-        gpu_num_per_server: int, verbose: bool):
+        local_points: int, comm_round: int, frequency_of_the_test: int, gpu_mapping_file: str,
+        gpu_mapping_key: str, verbose: bool):
     """ This command will run the entire experiment.
     """
     click.echo(stat_rep(locals()))
